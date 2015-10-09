@@ -1,0 +1,15 @@
+<head>
+  <title>Fun Fit</title>
+</head>
+
+<body>
+    {{#if currentUser}}
+        <ng-include src="dashboard.ng.html">
+        </ng-include>
+    {{else}}
+        Go ahead
+        Login
+        <!--<div class="container" ng-include="dashboard.ng.html" ng-controller="TodosListCtrl">-->
+        <!--</div>-->
+    {{/if}}
+</body>
