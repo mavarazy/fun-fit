@@ -1,0 +1,12 @@
+<blaze-template name="loginButtons"></blaze-template>
+
+<div ng-show="currentUser" id="points" ng-controller="PointsCtrl as p">
+
+    My points: {{my}}
+    {{p.randomString}}
+    <ul>
+        <li ng-repeat="model in points track by model._id">
+            {{$index}} {{model._id}} - {{model.points}}
+        </li>
+    </ul>
+</div>

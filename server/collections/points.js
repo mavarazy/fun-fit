@@ -1,58 +1,27 @@
 Points = new Mongo.Collection("points");
 
+// Expose points to external application
 Meteor.publish('points', function () {
-    return Points.find({
-        $or: [
-            { owner: this.userId }
-        ]
-    });
+    console.log("Publishing points");
+    return Points.find({});
 });
 
+// When adding new user create a new record in points collection
+Accounts.onCreateUser(function(options, user) {
+    Points.update(
+        { _id: user._id },
+        { points: 0 },
+        { upsert: true }
+    )
+    return user;
+});
+
+//
 Meteor.methods({
     'points.get': function() {
-        if (!Meteor.userId) {
+        if (!Meteor.userId()) {
             throw new Meteor.Error('not-authorized');
         }
-        Points.findOne({ owner: userId })
+        Points.findOne({ _id: Meteor.userId() })
     }
 });
-//  addTask: function(text) {
-//      if (!Meteor.userId) {
-//        throw new Meteor.Error('not-authorized');
-//      }
-//
-//      Tasks.insert({
-//        text: text,
-//        createdAt: new Date(),
-//        owner: Meteor.userId(),
-//        username: Meteor.user().username
-//      });
-//    },
-//  deleteTask: function(taskId) {
-//    var task = Tasks.findOne(taskId);
-//    if (task.private && task.owner !== Meteor.userId()) {
-//      throw new Meteor.Error('not-authorized');
-//    }
-//
-//    Tasks.remove(taskId);
-//  },
-//  setChecked: function(taskId, setChecked) {
-//    var task = Tasks.findOne(taskId);
-//    if (task.owner !== Meteor.userId()) {
-//      throw new Meteor.Error('not-authorized');
-//    }
-//
-//    Tasks.update(taskId, { $set: { checked: setChecked }})
-//  },
-//  setPrivate: function(taskId, setToPrivate) {
-//    console.log("set private called " + taskId + " " + setToPrivate);
-//    var task = Tasks.findOne(taskId);
-//
-//    if (task.owner != Meteor.userId()) {
-//      throw new Meteor.Error('not-authorized');
-//    }
-//
-//    Tasks.update(taskId, { $set: { private: setToPrivate }});
-//  }
-//});
-//
