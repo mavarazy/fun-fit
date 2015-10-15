@@ -1,5 +1,3 @@
-Points = new Mongo.Collection("points");
-
 // Expose points to external application
 Meteor.publish('points', function () {
     console.log("Publishing points");
@@ -8,20 +6,22 @@ Meteor.publish('points', function () {
 
 // When adding new user create a new record in points collection
 Accounts.onCreateUser(function(options, user) {
+    console.log("Creating user " + user._id);
     Points.update(
         { _id: user._id },
         { points: 0 },
         { upsert: true }
-    )
+    );
     return user;
 });
 
-//
+// Exposing pointsGet operation
 Meteor.methods({
-    'points.get': function() {
+    pointsGet: function() {
+        console.log("Get points called for " + Meteor.userId());
         if (!Meteor.userId()) {
             throw new Meteor.Error('not-authorized');
         }
-        Points.findOne({ _id: Meteor.userId() })
+        return Points.findOne({ _id: Meteor.userId() });
     }
 });

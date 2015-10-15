@@ -1,5 +1,3 @@
-Groups = new Mongo.Collection("groups");
-
 Meteor.publish('groups', function () {
     return Groups.find({
         $or: [
