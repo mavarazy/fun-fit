@@ -1,14 +1,16 @@
 <blaze-template name="loginButtons"></blaze-template>
 
 <div ng-show="currentUser" id="points" ng-controller="PointsCtrl as vm">
+    Points: {{vm.my.points}}
+</div>
 
-    My points: {{vm.my.points}}
-    <p>
-        {{vm.my | json}}
-    </p>
-    <ul>
-        <li ng-repeat="model in vm.points track by model._id">
-            {{$index}} {{model._id}} - {{model.points}}
-        </li>
-    </ul>
+<div ng-show="currentUser" id="dataSource" ng-controller="GoogleFitCtrl as vm">
+    <h1>Data Sources</h1>
+    <pre>
+        {{vm.sources | json}}
+    </pre>
+    <h1>Points</h1>
+    <pre>
+       {{vm.dataPoints | json}}
+    </pre>
 </div>
